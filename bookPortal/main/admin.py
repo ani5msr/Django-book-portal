@@ -15,7 +15,6 @@ class ProductTagAdmin(admin.ModelAdmin):
  list_filter = ('active',)
  search_fields = ('name',)
  prepopulated_fields = {"slug": ("name",)}
- autocomplete_fields = ('products',)
 admin.site.register(models.ProductTag, ProductTagAdmin)
 class ProductImageAdmin(admin.ModelAdmin):
  list_display = ('thumbnail_tag', 'product_name')

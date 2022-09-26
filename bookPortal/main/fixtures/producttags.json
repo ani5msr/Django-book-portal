@@ -1,0 +1,11 @@
+[
+{
+  "model": "main.producttag",
+  "fields": {
+    "name": "Horror",
+    "slug": "horror",
+    "description": "Lovecraftian Horror",
+    "active": true
+  }
+}
+]
