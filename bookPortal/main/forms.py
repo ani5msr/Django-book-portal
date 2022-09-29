@@ -13,10 +13,10 @@ class ContactForm(forms.Form):
         message = "From: {0}\n{1}".format(self.cleaned_data["name"],self.cleaned_data["message"],)
         send_mail("Site message",message,"site@bookPortal.domain",["customerservice@bookPortal.domain"],fail_silently=False,)
 class UserCreationForm(DjangoUserCreationForm):
- class Meta(DjangoUserCreationForm.Meta):
-    model = models.User
-    fields = ("email",)
-    field_classes = {"email": UsernameField}
+    class Meta(DjangoUserCreationForm.Meta):
+        model = models.User
+        fields = ("email",)
+        field_classes = {"email": UsernameField}
     def send_mail(self):
         logger.info("Sending signup email for email=%s",self.cleaned_data["email"],)
         message = "Welcome{}".format(self.cleaned_data["email"])

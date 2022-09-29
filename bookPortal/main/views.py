@@ -31,7 +31,7 @@ class ProductListView(ListView):
             products = models.Product.objects.active()
         return products.order_by("name")
 class SignupView(FormView):
-    template_name = "signup.html"
+    template_name = "signUp.html"
     form_class = forms.UserCreationForm
     def get_success_url(self):
         redirect_to = self.request.GET.get("next", "/")
