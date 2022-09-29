@@ -2,8 +2,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 # Register your models here.
 from . import models
-from django.contrib.auth.admin import UserAdmin as
-DjangoUserAdmin
+from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 
 @admin.register(models.User)
 class UserAdmin(DjangoUserAdmin):
