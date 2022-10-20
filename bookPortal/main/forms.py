@@ -20,4 +20,20 @@ class UserCreationForm(DjangoUserCreationForm):
     def send_mail(self):
         logger.info("Sending signup email for email=%s",self.cleaned_data["email"],)
         message = "Welcome{}".format(self.cleaned_data["email"])
-        send_mail("Welcome to BookTime",message,"site@booktime.domain",[self.cleaned_data["email"]],fail_silently=True,)        
+        send_mail("Welcome to BookTime",message,"site@booktime.domain",[self.cleaned_data["email"]],fail_silently=True,)    
+class AuthenticationForm(forms.Form):
+    email = forms.EmailField()
+    password = forms.CharField(strip=False, widget=forms.PasswordInput)  
+    def __init__(self, request=None, *args, **kwargs):
+        self.request = request
+        self.user = None
+        super().__init__(*args, **kwargs)  
+    def clean(self):
+        email = self.cleaned_data.get("email")
+        password = self.cleaned_data.get("password")
+        if email is not None and password:
+            self.user = authenticate(self.request, email=email, password=password)
+        if self.user is None:
+            raise forms.ValidationError("Invalid email/password combination.")
+        logger.info("Authentication successful for email=%s", email)
+        return self.cleaned_data
