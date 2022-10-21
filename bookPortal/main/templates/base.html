@@ -40,10 +40,10 @@
     <div class="alert alert-{{ message.tags }}">{{ message }}</div>
     {% endfor %}
  {% block content %}
- {% if request.basket %}
+ {% if request.cart %}
  <div>
- {{ request.basket.count }}
- items in basket
+ {{ request.cart.count }}
+ items in cart
  </div>
  {% endif %}
  {% endblock content %}

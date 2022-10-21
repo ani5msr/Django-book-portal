@@ -4,7 +4,14 @@ import logging
 from django.contrib.auth.forms import (UserCreationForm as DjangoUserCreationForm)
 from django.contrib.auth.forms import UsernameField
 from . import models
+from django.forms import inlineformset_factory
 logger = logging.getLogger(__name__)
+cartLineFormSet = inlineformset_factory(
+ models.cart,
+ models.cartLine,
+ fields=("quantity",),
+ extra=0,
+)
 class ContactForm(forms.Form):
     name = forms.CharField(label='Your name', max_length=100)
     message = forms.CharField(max_length=600, widget=forms.Textarea)

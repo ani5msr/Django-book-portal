@@ -1,13 +1,13 @@
 from . import models
 
-def basket_middleware(get_response):
+def cart_middleware(get_response):
  def middleware(request):
-    if 'basket_id' in request.session:
-        basket_id = request.session['basket_id']
-        basket = models.Basket.objects.get(id=basket_id)
-        request.basket = basket
+    if 'cart_id' in request.session:
+        cart_id = request.session['cart_id']
+        cart = models.cart.objects.get(id=cart_id)
+        request.cart = cart
     else:
-        request.basket=None
+        request.cart=None
         response = get_response(request)
     return response
  return middleware

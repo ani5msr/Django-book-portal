@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Basket',
+            name='cart',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('status', models.IntegerField(choices=[(10, 'Open'), (20, 'Submitted')], default=10)),
@@ -22,11 +22,11 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='BasketLine',
+            name='cartLine',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('quantity', models.PositiveIntegerField(default=1, validators=[django.core.validators.MinValueValidator(1)])),
-                ('basket', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='main.basket')),
+                ('cart', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='main.cart')),
                 ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='main.product')),
             ],
         ),
