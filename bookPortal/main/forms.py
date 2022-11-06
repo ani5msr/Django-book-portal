@@ -4,11 +4,12 @@ import logging
 from django.contrib.auth.forms import (UserCreationForm as DjangoUserCreationForm)
 from django.contrib.auth.forms import UsernameField
 from . import models
+from . import widgets
 from django.forms import inlineformset_factory
 logger = logging.getLogger(__name__)
 cartLineFormSet = inlineformset_factory(
- models.cart,
- models.cartLine,
+ models.Cart,
+ models.CartLine,
  fields=("quantity",),
  extra=0,
 )
@@ -44,3 +45,10 @@ class AuthenticationForm(forms.Form):
             raise forms.ValidationError("Invalid email/password combination.")
         logger.info("Authentication successful for email=%s", email)
         return self.cleaned_data
+BasketLineFormSet = inlineformset_factory(
+ models.Cart,
+ models.CartLine,
+ fields=("quantity",),
+ extra=0,
+ widgets={"quantity": widgets.PlusMinusNumberInput()},
+)

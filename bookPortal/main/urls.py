@@ -59,4 +59,5 @@ urlpatterns = [
  views.add_to_cart,
  name="add_to_cart",
  ),
+ path('cart/', views.manage_cart, name="cart"),
 ]  

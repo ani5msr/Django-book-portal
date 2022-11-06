@@ -1,6 +1,8 @@
 from io import BytesIO
 import logging
 from PIL import Image
+from .models import Cart
+from django.contrib.auth.signals import user_logged_in
 from django.core.files.base import ContentFile
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
@@ -20,3 +22,19 @@ def generate_thumbnail(sender, instance, **kwargs):
  instance.image.name,
  ContentFile(temp_thumb.read()),save=False,)
  temp_thumb.close()
+@receiver(user_logged_in)
+def merge_carts_if_found(sender, user, request,**kwargs):
+ anonymous_cart = getattr(request,"cart",None)
+ if anonymous_cart:
+    try:
+        loggedin_cart = Cart.objects.get(user=user, status=Cart.OPEN)
+        for line in anonymous_cart.cartline_set.all():
+            line.cart = loggedin_cart
+            line.save()
+        anonymous_cart.delete()
+        request.cart = loggedin_cart
+        logger.info("Merged cart to id %d", loggedin_cart.id)
+    except Cart.DoesNotExist:
+        anonymous_cart.user = user
+        anonymous_cart.save()
+        logger.info("Assigned user to cart id %d",anonymous_cart.id,)
