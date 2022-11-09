@@ -83,28 +83,28 @@ class AddressDeleteView(LoginRequiredMixin, DeleteView):
         return self.model.objects.filter(user=self.request.user)
 def add_to_cart(request):
  product = get_object_or_404(models.Product, pk=request.GET.get("product_id"))
- cart= request.cart
+ cart = request.cart
  if not request.cart:
     if request.user.is_authenticated:
         user = request.user
     else:
         user = None
-        cart = models.cart.objects.create(user=user)
-        request.session["cart_id"] = cart.id
-    cartline, created = models.cartLine.objects.get_or_create(cart=cart, product=product)
-    if not created:
-        cartline.quantity += 1
-        cartline.save()
+    cart = models.Cart.objects.create(user=user)
+    request.session["cart_id"] = cart.id
+ Cartline, created = models.CartLine.objects.get_or_create(cart=cart, product=product)
+ if not created:
+        Cartline.quantity += 1
+        Cartline.save()
  return HttpResponseRedirect(reverse("product", args=(product.slug,)))
 def manage_cart(request):
  if not request.cart:
     return render(request, "cart.html", {"formset": None})
  if request.method == "POST":
-    formset = forms.cartLineFormSet(request.POST, instance=request.cart)
- if formset.is_valid():
-    formset.save()
+    formset = forms.CartLineFormSet(request.POST, instance=request.cart)
+    if formset.is_valid():
+        formset.save()
  else:
-    formset = forms.cartLineFormSet(instance=request.cart)
+    formset = forms.CartLineFormSet(instance=request.cart)
  if request.cart.is_empty():
     return render(request, "cart.html", {"formset": None})
  return render(request, "cart.html", {"formset": formset})

@@ -67,6 +67,6 @@ urlpatterns = [
  path(
  "order/address_select/",
  views.AddressSelectionView.as_view(),
- name="address_sel",
+ name="address_select",
  ),
 ]  

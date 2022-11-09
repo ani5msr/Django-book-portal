@@ -1,6 +1,7 @@
 from django import forms
 from django.core.mail import send_mail
 import logging
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import (UserCreationForm as DjangoUserCreationForm)
 from django.contrib.auth.forms import UsernameField
 from . import models
@@ -41,11 +42,13 @@ class AuthenticationForm(forms.Form):
         password = self.cleaned_data.get("password")
         if email is not None and password:
             self.user = authenticate(self.request, email=email, password=password)
-        if self.user is None:
-            raise forms.ValidationError("Invalid email/password combination.")
-        logger.info("Authentication successful for email=%s", email)
+            if self.user is None:
+                raise forms.ValidationError("Invalid email/password combination.")
+            logger.info("Authentication successful for email=%s", email)
         return self.cleaned_data
-BasketLineFormSet = inlineformset_factory(
+    def get_user(self):
+        return self.user
+CartLineFormSet = inlineformset_factory(
  models.Cart,
  models.CartLine,
  fields=("quantity",),
